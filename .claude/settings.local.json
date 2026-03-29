@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm create:*)",
+      "Read(//usr/local/**)",
+      "Read(//Users/russellmolinaordonez/.nvm/versions/node/**)",
+      "Bash(export NVM_DIR=\"$HOME/.nvm\")",
+      "Bash(source \"$NVM_DIR/nvm.sh\")",
+      "Bash(nvm use:*)",
+      "Bash(npm --version)",
+      "Bash(printf \"y\\\\n\")",
+      "Bash(npx create-vite@latest . --template react)",
+      "Read(//private/tmp/**)",
+      "Bash(npx create-vite@latest pixelnova-os --template react)",
+      "Bash(npm install:*)",
+      "Bash(npx tailwindcss:*)",
+      "Bash(./node_modules/.bin/tailwindcss init:*)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(npm run:*)",
+      "Bash(/Users/russellmolinaordonez/.nvm/versions/node/v22.22.2/bin/npm run:*)",
+      "Bash(export PATH=\"/Users/russellmolinaordonez/.nvm/versions/node/v22.22.2/bin:$PATH\")",
+      "Bash(git --version)"
+    ]
+  }
+}

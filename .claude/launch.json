@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "PixelNova OS — Dev Server",
+      "runtimeExecutable": "/Users/russellmolinaordonez/.nvm/versions/node/v22.22.2/bin/node",
+      "runtimeArgs": ["/Users/russellmolinaordonez/Desktop/pixelnova,app/node_modules/.bin/vite", "--port", "5173"],
+      "port": 5173
+    },
+    {
+      "name": "PixelNova OS — Preview (post-build)",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "preview"],
+      "port": 4173
+    }
+  ]
+}

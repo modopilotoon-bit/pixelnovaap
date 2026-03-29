@@ -1,0 +1,121 @@
+@import "tailwindcss";
+
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap');
+
+@theme {
+  --color-bg-base: #0A0A0F;
+  --color-bg-card: #111118;
+  --color-bg-hover: #1A1A24;
+  --color-accent: #3B9EFF;
+  --color-accent2: #6B2FA0;
+  --color-success: #1A8C4E;
+  --color-warning: #E85D1A;
+  --color-text-main: #FFFFFF;
+  --color-text-muted: #6B6B7A;
+  --color-border: #1E1E2E;
+
+  --font-bebas: 'Bebas Neue', cursive;
+  --font-dm: 'DM Sans', sans-serif;
+}
+
+:root {
+  --bg-base: #0A0A0F;
+  --bg-card: #111118;
+  --bg-hover: #1A1A24;
+  --accent: #3B9EFF;
+  --accent2: #6B2FA0;
+  --success: #1A8C4E;
+  --warning: #E85D1A;
+  --text-main: #FFFFFF;
+  --text-muted: #6B6B7A;
+  --border: #1E1E2E;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root {
+  height: 100%;
+  background-color: #0A0A0F;
+  color: #FFFFFF;
+  font-family: 'DM Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: #0A0A0F;
+}
+::-webkit-scrollbar-thumb {
+  background: #1E1E2E;
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #3B9EFF;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-8px); }
+  20%, 40%, 60%, 80% { transform: translateX(8px); }
+}
+
+.shake {
+  animation: shake 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.card-hover:hover {
+  background: var(--bg-hover);
+  border-color: var(--accent);
+}
+
+input, textarea, select {
+  background: var(--bg-base);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-main);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  padding: 10px 12px;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: var(--accent);
+}
+
+input::placeholder, textarea::placeholder {
+  color: var(--text-muted);
+}
+
+select option {
+  background: var(--bg-card);
+}
