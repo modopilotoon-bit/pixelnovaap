@@ -1,5 +1,8 @@
+import { useEffect } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { useAppStore } from './store/useAppStore'
+import { useFinanceStore } from './store/useFinanceStore'
+import { useConfigStore } from './store/useConfigStore'
 import LoginScreen from './pages/LoginScreen'
 import Layout from './components/Layout'
 import Dashboard from './pages/Dashboard'
@@ -14,6 +17,17 @@ import Ajustes from './pages/Ajustes'
 
 export default function App() {
   const unlocked = useAppStore((s) => s.unlocked)
+  const subscribeApp = useAppStore((s) => s.subscribeToFirebase)
+  const subscribeFinance = useFinanceStore((s) => s.subscribeToFirebase)
+  const subscribeConfig = useConfigStore((s) => s.subscribeToFirebase)
+
+  useEffect(() => {
+    if (unlocked) {
+      subscribeApp()
+      subscribeFinance()
+      subscribeConfig()
+    }
+  }, [unlocked])
 
   if (!unlocked) return <LoginScreen />
 

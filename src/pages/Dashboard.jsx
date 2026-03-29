@@ -31,7 +31,9 @@ export default function Dashboard() {
   const videos = useAppStore((s) => s.videos)
   const grabaciones = useAppStore((s) => s.grabaciones)
   const historias = useAppStore((s) => s.historias)
+  const currentUser = useAppStore((s) => s.currentUser)
   const ingresos = useFinanceStore((s) => s.ingresos)
+  const userName = currentUser ? currentUser.charAt(0) + currentUser.slice(1).toLowerCase() : ''
 
   const clientesActivos = clientes.filter((c) => c.estado === 'ACTIVO')
   const mesActual = '2026-04'
@@ -113,7 +115,7 @@ export default function Dashboard() {
             WebkitTextFillColor: 'transparent',
             backgroundClip: 'text',
           }}>
-            {getGreeting()}, Russell
+            {getGreeting()}, {userName}
           </h1>
           {diasGrabacion !== null && (
             <div style={{

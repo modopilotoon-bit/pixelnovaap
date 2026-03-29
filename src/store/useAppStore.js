@@ -3,6 +3,9 @@ import { persist } from 'zustand/middleware'
 import { defaultClientes } from '../data/clientes'
 import { defaultVideos } from '../data/videos'
 import { defaultHerramientas } from '../data/herramientas'
+import { syncWrite, syncRead, syncSubscribe } from '../lib/syncService'
+
+let unsubscribe = null
 
 export const useAppStore = create(
   persist(
@@ -13,60 +16,108 @@ export const useAppStore = create(
       unlock: (username) => set({ unlocked: true, currentUser: username }),
       lock: () => set({ unlocked: false, currentUser: null }),
 
+      // Firebase subscription (run once after login)
+      subscribeToFirebase: () => {
+        if (unsubscribe) return
+        unsubscribe = syncSubscribe('pixelnova', 'appData', (data) => {
+          set({
+            clientes: data.clientes || get().clientes,
+            videos: data.videos || get().videos,
+            herramientas: data.herramientas || get().herramientas,
+            grabaciones: data.grabaciones || get().grabaciones,
+            historias: data.historias || get().historias,
+          })
+        })
+      },
+
+      _syncToFirebase: () => {
+        const s = get()
+        syncWrite('pixelnova', 'appData', {
+          clientes: s.clientes,
+          videos: s.videos,
+          herramientas: s.herramientas,
+          grabaciones: s.grabaciones,
+          historias: s.historias,
+        })
+      },
+
       // Clientes
       clientes: defaultClientes,
-      addCliente: (cliente) => set((s) => ({ clientes: [...s.clientes, { ...cliente, id: Date.now().toString() }] })),
-      updateCliente: (id, data) => set((s) => ({
-        clientes: s.clientes.map((c) => c.id === id ? { ...c, ...data } : c)
-      })),
-      deleteCliente: (id) => set((s) => ({ clientes: s.clientes.filter((c) => c.id !== id) })),
+      addCliente: (cliente) => {
+        set((s) => ({ clientes: [...s.clientes, { ...cliente, id: Date.now().toString() }] }))
+        get()._syncToFirebase()
+      },
+      updateCliente: (id, data) => {
+        set((s) => ({ clientes: s.clientes.map((c) => c.id === id ? { ...c, ...data } : c) }))
+        get()._syncToFirebase()
+      },
+      deleteCliente: (id) => {
+        set((s) => ({ clientes: s.clientes.filter((c) => c.id !== id) }))
+        get()._syncToFirebase()
+      },
 
-      // Pagos de clientes
-      marcarPagado: (clienteId, pagoId) => set((s) => ({
-        clientes: s.clientes.map((c) =>
-          c.id === clienteId
-            ? { ...c, pagos: c.pagos.map((p) => p.id === pagoId ? { ...p, estado: 'PAGADO', fechaPago: new Date().toISOString() } : p) }
-            : c
-        )
-      })),
-      addPago: (clienteId, pago) => set((s) => ({
-        clientes: s.clientes.map((c) =>
-          c.id === clienteId
-            ? { ...c, pagos: [...c.pagos, { ...pago, id: Date.now().toString() }] }
-            : c
-        )
-      })),
+      // Pagos
+      marcarPagado: (clienteId, pagoId) => {
+        set((s) => ({
+          clientes: s.clientes.map((c) =>
+            c.id === clienteId
+              ? { ...c, pagos: c.pagos.map((p) => p.id === pagoId ? { ...p, estado: 'PAGADO', fechaPago: new Date().toISOString() } : p) }
+              : c
+          )
+        }))
+        get()._syncToFirebase()
+      },
+      addPago: (clienteId, pago) => {
+        set((s) => ({
+          clientes: s.clientes.map((c) =>
+            c.id === clienteId ? { ...c, pagos: [...c.pagos, { ...pago, id: Date.now().toString() }] } : c
+          )
+        }))
+        get()._syncToFirebase()
+      },
 
-      // Cuentas de clientes
-      updateCuenta: (clienteId, cuentaId, data) => set((s) => ({
-        clientes: s.clientes.map((c) =>
-          c.id === clienteId
-            ? { ...c, cuentas: c.cuentas.map((cu) => cu.id === cuentaId ? { ...cu, ...data } : cu) }
-            : c
-        )
-      })),
-      addCuenta: (clienteId, cuenta) => set((s) => ({
-        clientes: s.clientes.map((c) =>
-          c.id === clienteId
-            ? { ...c, cuentas: [...(c.cuentas || []), { ...cuenta, id: Date.now().toString() }] }
-            : c
-        )
-      })),
-      deleteCuenta: (clienteId, cuentaId) => set((s) => ({
-        clientes: s.clientes.map((c) =>
-          c.id === clienteId
-            ? { ...c, cuentas: c.cuentas.filter((cu) => cu.id !== cuentaId) }
-            : c
-        )
-      })),
+      // Cuentas
+      updateCuenta: (clienteId, cuentaId, data) => {
+        set((s) => ({
+          clientes: s.clientes.map((c) =>
+            c.id === clienteId
+              ? { ...c, cuentas: c.cuentas.map((cu) => cu.id === cuentaId ? { ...cu, ...data } : cu) }
+              : c
+          )
+        }))
+        get()._syncToFirebase()
+      },
+      addCuenta: (clienteId, cuenta) => {
+        set((s) => ({
+          clientes: s.clientes.map((c) =>
+            c.id === clienteId ? { ...c, cuentas: [...(c.cuentas || []), { ...cuenta, id: Date.now().toString() }] } : c
+          )
+        }))
+        get()._syncToFirebase()
+      },
+      deleteCuenta: (clienteId, cuentaId) => {
+        set((s) => ({
+          clientes: s.clientes.map((c) =>
+            c.id === clienteId ? { ...c, cuentas: c.cuentas.filter((cu) => cu.id !== cuentaId) } : c
+          )
+        }))
+        get()._syncToFirebase()
+      },
 
       // Videos
       videos: defaultVideos,
-      addVideo: (video) => set((s) => ({ videos: [...s.videos, { ...video, id: Date.now().toString() }] })),
-      updateVideo: (id, data) => set((s) => ({
-        videos: s.videos.map((v) => v.id === id ? { ...v, ...data } : v)
-      })),
-      deleteVideo: (id) => set((s) => ({ videos: s.videos.filter((v) => v.id !== id) })),
+      addVideo: (video) => {
+        set((s) => ({ videos: [...s.videos, { ...video, id: Date.now().toString() }] }))
+        get()._syncToFirebase()
+      },
+      updateVideo: (id, data) => {
+        set((s) => ({ videos: s.videos.map((v) => v.id === id ? { ...v, ...data } : v) }))
+        get()._syncToFirebase()
+      },
+      deleteVideo: (id) => {
+        set((s) => ({ videos: s.videos.filter((v) => v.id !== id) }))
+        get()._syncToFirebase()
+      },
       avanzarEstado: (id) => {
         const estados = ['PENDIENTE', 'GRABADO', 'EN EDICIÓN', 'LISTO', 'APROBADO', 'PUBLICADO']
         set((s) => ({
@@ -81,50 +132,49 @@ export const useAppStore = create(
             }
           })
         }))
+        get()._syncToFirebase()
       },
 
       // Herramientas
       herramientas: defaultHerramientas,
-      updateHerramienta: (id, data) => set((s) => ({
-        herramientas: s.herramientas.map((h) => h.id === id ? { ...h, ...data } : h)
-      })),
-      addHerramienta: (h) => set((s) => ({ herramientas: [...s.herramientas, { ...h, id: Date.now().toString() }] })),
+      updateHerramienta: (id, data) => {
+        set((s) => ({ herramientas: s.herramientas.map((h) => h.id === id ? { ...h, ...data } : h) }))
+        get()._syncToFirebase()
+      },
+      addHerramienta: (h) => {
+        set((s) => ({ herramientas: [...s.herramientas, { ...h, id: Date.now().toString() }] }))
+        get()._syncToFirebase()
+      },
 
-      // Grabaciones tracker
+      // Grabaciones
       grabaciones: [
         { id: '1', clienteId: 'nicos-house', mes: '2026-04', numero: 1, tipo: 'Miércoles ambiente', fecha: '2026-04-01', completada: false },
         { id: '2', clienteId: 'nicos-house', mes: '2026-04', numero: 2, tipo: 'Viernes producto', fecha: '2026-04-04', completada: false },
       ],
-      toggleGrabacion: (id) => set((s) => ({
-        grabaciones: s.grabaciones.map((g) => g.id === id ? { ...g, completada: !g.completada } : g)
-      })),
+      toggleGrabacion: (id) => {
+        set((s) => ({ grabaciones: s.grabaciones.map((g) => g.id === id ? { ...g, completada: !g.completada } : g) }))
+        get()._syncToFirebase()
+      },
 
-      // Historias tracker
+      // Historias
       historias: [
         { id: '1', clienteId: 'nicos-house', mes: '2026-04', total: 20, publicadas: 0 }
       ],
-      updateHistorias: (clienteId, mes, publicadas) => set((s) => ({
-        historias: s.historias.map((h) =>
-          h.clienteId === clienteId && h.mes === mes ? { ...h, publicadas } : h
-        )
-      })),
+      updateHistorias: (clienteId, mes, publicadas) => {
+        set((s) => ({
+          historias: s.historias.map((h) =>
+            h.clienteId === clienteId && h.mes === mes ? { ...h, publicadas } : h
+          )
+        }))
+        get()._syncToFirebase()
+      },
 
       // Reset
-      resetAll: () => set({
-        clientes: defaultClientes,
-        videos: defaultVideos,
-        herramientas: defaultHerramientas,
-      }),
+      resetAll: () => set({ clientes: defaultClientes, videos: defaultVideos, herramientas: defaultHerramientas }),
 
       exportData: () => {
         const s = get()
-        return JSON.stringify({
-          clientes: s.clientes,
-          videos: s.videos,
-          herramientas: s.herramientas,
-          grabaciones: s.grabaciones,
-          historias: s.historias,
-        }, null, 2)
+        return JSON.stringify({ clientes: s.clientes, videos: s.videos, herramientas: s.herramientas, grabaciones: s.grabaciones, historias: s.historias }, null, 2)
       },
 
       importData: (json) => {
@@ -137,10 +187,9 @@ export const useAppStore = create(
             grabaciones: data.grabaciones || [],
             historias: data.historias || [],
           })
+          get()._syncToFirebase()
           return true
-        } catch {
-          return false
-        }
+        } catch { return false }
       }
     }),
     {
