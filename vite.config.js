@@ -7,30 +7,22 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['icons/icon-192.png', 'icons/icon-512.png'],
       manifest: {
-        name: 'PixelNova OS',
-        short_name: 'PixelNova',
-        description: 'Sistema operativo de trabajo para Pixel Nova',
+        name: 'Chispa ✨',
+        short_name: 'Chispa',
+        description: 'Conócete de verdad — un espacio íntimo para dos personas',
         start_url: '/',
         display: 'standalone',
-        background_color: '#0A0A0F',
-        theme_color: '#3B9EFF',
+        background_color: '#0D0608',
+        theme_color: '#0D0608',
         orientation: 'portrait-primary',
         lang: 'es',
         icons: [
           {
-            src: '/icons/icon-192.png',
+            src: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✨</text></svg>",
             sizes: '192x192',
-            type: 'image/png',
-            purpose: 'any maskable'
+            type: 'image/svg+xml',
           },
-          {
-            src: '/icons/icon-512.png',
-            sizes: '512x512',
-            type: 'image/png',
-            purpose: 'any maskable'
-          }
         ]
       },
       workbox: {

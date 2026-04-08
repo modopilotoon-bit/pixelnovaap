@@ -1,0 +1,60 @@
+{
+  "yo_nunca": {
+    "prompts": [
+      "Yo nunca he cantado en público...",
+      "Yo nunca he mentido en una entrevista de trabajo...",
+      "Yo nunca he roto algo y culpado a alguien más...",
+      "Yo nunca he mandado un mensaje al destinatario equivocado...",
+      "Yo nunca he llorado viendo una película de Disney...",
+      "Yo nunca he fingido estar dormido/a para no hablar con alguien...",
+      "Yo nunca he tenido un crush con alguien de quien no debía...",
+      "Yo nunca he comido algo caído al suelo (regla de los 5 segundos)...",
+      "Yo nunca he leído el diario o mensajes de alguien sin permiso...",
+      "Yo nunca he inventado una excusa para cancelar planes...",
+      "Yo nunca me he perdido en una ciudad extranjera...",
+      "Yo nunca he cambiado mi versión de una historia para quedar mejor...",
+      "Yo nunca he googleado mi propio nombre...",
+      "Yo nunca he practicado una conversación frente al espejo...",
+      "Yo nunca he olvidado por completo el nombre de alguien importante...",
+      "Yo nunca he comprado algo caro impulsivamente y luego me arrepentí...",
+      "Yo nunca he tenido miedo de quedarme solo/a para siempre...",
+      "Yo nunca he visto el mismo episodio de una serie más de tres veces...",
+      "Yo nunca he dicho 'estoy bien' cuando claramente no lo estaba...",
+      "Yo nunca he querido desaparecer un día sin dar explicaciones a nadie..."
+    ]
+  },
+  "completa_la_frase": {
+    "starters": [
+      "Lo que más me asusta del futuro es...",
+      "Si pudiera describir cómo me siento contigo en una imagen sería...",
+      "La versión de mí que más me gusta emerge cuando...",
+      "Algo que nunca te dije pero que pienso seguido es...",
+      "Si un día me perdiera, quisiera que me recordaras como...",
+      "Lo que más valoro en esta conexión es...",
+      "Cuando estoy con alguien de verdad, lo primero que siento es...",
+      "El amor para mí huele a...",
+      "Lo que más me cuesta mostrar cuando me importa alguien es...",
+      "Si pudiera darte un regalo que no se compra, sería...",
+      "La cosa que más me da paz en este mundo es...",
+      "Cuando me siento triste, lo que más necesito es...",
+      "Mi versión favorita de mí mismo/a aparece cuando...",
+      "Lo que más me cuesta soltar en la vida es...",
+      "Si pudiera vivir en cualquier momento de mi vida otra vez, elegiría...",
+      "La música me hace sentir que...",
+      "Lo que más me asusta de amarte bien es...",
+      "Mi mayor contradicción es que quiero... pero a la vez...",
+      "Si el mundo se acabara mañana, esta noche haría...",
+      "Lo más bonito que alguien me ha dicho fue...",
+      "Cuando pienso en el futuro, lo que más deseo es...",
+      "La cosa que más me cuesta perdonarme es...",
+      "Si pudiera mandarte un mensaje sin palabras, te enviaría...",
+      "Lo que me haces sentir que nadie más me había hecho sentir es...",
+      "Mi forma de decir 'te quiero' sin decirlo es...",
+      "Cuando estoy en mi peor versión, lo que necesito es...",
+      "La cosa que más me asombra de las personas es...",
+      "Si pudiera cambiar una sola cosa de cómo soy, elegiría...",
+      "Lo que me hace sentir que todo va a estar bien es...",
+      "Lo que más me costó aprender sobre mí mismo/a fue..."
+    ]
+  }
+}
